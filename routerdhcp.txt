@@ -1,0 +1,60 @@
+
+Configure Router with IP address:
+R1# conf t
+R1(config)# interface fastethernet0/0
+R1(config-if)# ip address 192.168.8.1 255.255.255.0
+R1(config-if)# no shutdown
+R1(config-if)# exit
+
+Configure DHCP server
+R1(config)# ip dhcp pool LAN/ipranges
+R1(dhcp-config)# network 192.168.8.0 255.255.255.0
+R1(dhcp-config)# default-router 192.168.8.1
+R1(dhcp-config)# dns-server 192.168.8.1
+R1(dhcp-config)# domain-name xyz.com (optional)
+R1(dhcp-config)# ip dhcp excluded-address 192.168.8.1 192.168.8.3 (optional)
+R1(dhcp-config)# lease infinite
+R1(dhcp-config)# end
+
+Client PC configuration
+PC1> sh ip
+PC1> ip dhcp
+PC1> sh ip
+
+Client Router Congf:
+R2#Configure t 
+R2(config)#no ip routing 
+R2(config)#interface f0/0 
+R2(config-if)# ip address dhcp 
+R2(config-if)# no shutdown
+
+
+
+
+The series of commands you've listed are used to configure a DHCP (Dynamic Host Configuration Protocol) server on a Cisco router. Each command contributes to setting up the router to automatically assign IP addresses and other network settings to client devices. Here's a detailed explanation of each command and its purpose:
+
+1. **`R1(config)# ip dhcp pool LAN/ipranges`**
+   - This command initiates the creation of a DHCP pool named "LAN/ipranges". A DHCP pool is a range of settings including IP addresses that the DHCP server can dynamically assign to client devices on the network. The name "LAN/ipranges" is just an identifier for this particular pool of addresses and settings.
+
+2. **`R1(dhcp-config)# network 192.168.8.0 255.255.255.0`**
+   - This command specifies the network range that the DHCP server will manage. In this case, it’s the network `192.168.8.0` with a subnet mask of `255.255.255.0`, which allows for 254 host addresses (`192.168.8.1` to `192.168.8.254`).
+
+3. **`R1(dhcp-config)# default-router 192.168.8.1`**
+   - This sets the default gateway for DHCP clients to `192.168.8.1`. The default gateway is the router through which the client devices will send traffic destined for outside the local network.
+
+4. **`R1(dhcp-config)# dns-server 192.168.8.1`**
+   - This command configures the DNS server address that DHCP clients should use, set to `192.168.8.1` in this case. This is typically the router itself if it's configured to relay DNS queries, or it could be an actual DNS server on the network.
+
+5. **`R1(dhcp-config)# domain-name xyz.com (optional)`**
+   - This optional command sets a domain name that DHCP clients will use as their default domain suffix. Here, it is set to "xyz.com". This is used for DNS resolution, helping to fully qualify hostnames.
+
+6. **`R1(dhcp-config)# ip dhcp excluded-address 192.168.8.1 192.168.8.3 (optional)`**
+   - This optional command defines a range of IP addresses that the DHCP server should not assign to clients. In this example, addresses from `192.168.8.1` to `192.168.8.3` are excluded, which can be useful for reserving IP addresses for servers, network printers, or other static devices.
+
+7. **`R1(dhcp-config)# lease infinite`**
+   - This command sets the lease time for the IP addresses to infinite, meaning that once a client device receives an IP address, it is not required to renew it. This can be useful in stable environments where the network devices seldom change, but in dynamic networks, it’s usually better to set a specific lease time to allow for regular updates and changes in client configurations.
+
+8. **`R1(dhcp-config)# end`**
+   - This command exits the DHCP configuration mode and returns to the privileged EXEC mode. It effectively saves the changes made in the DHCP configuration mode.
+
+By configuring these settings, the router is equipped to serve as a DHCP server, managing IP addresses and essential network configurations for client devices within the specified network segment.

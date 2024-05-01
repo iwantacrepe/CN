@@ -1,0 +1,84 @@
+pc1
+pc config
+
+ip 192.168.1.10/24 192.168.1.1
+
+pc2
+ip 192.168.1.11/24 192.168.1.1
+
+pc1
+ping 192.168.1.11
+
+sh ip
+shows ip
+
+clear ip
+removes ip
+
+note-> when direct connection then all ip should be of same class
+
+*******
+router config
+
+Pc1
+PC1> ip 10.50.1.10/24 10.50.1.11
+
+R1
+R1#config t 
+R1(config)#interface fastethernet0/0 
+R1(config-if)#ip address 10.50.1.11 255.255.0.0 
+R1(config-if)#no shutdown 
+R1(config-if)#exit
+
+Note-> gateway address and router interface address should be same
+
+***********
+hub and switches
+
+Note -> in switches and hub ip should be of same class and same subnet mask
+
+***********
+give dns ip add to pc
+
+PC1> ip 192.168.1.1/24 192.168.1.100
+Checking for duplicate address...
+ip PC1 : 192.168.1.1 255.255.255.0 gateway 192.168.1.100
+
+PC1> ip dns 192.168.1.100
+
+PC1> sh ip
+
+NAME        : PC1[1]
+IP/MASK     : 192.168.1.1/24
+GATEWAY     : 192.168.1.100
+DNS         : 192.168.1.100
+MAC         : 00:50:79:66:68:00
+LPORT       : 10000
+RHOST:PORT  : 127.0.0.1:10001
+MTU:        : 1500
+
+**********
+
+Set a console password 
+
+Router(config)#line con 0 
+Router(config-line)#login 
+Router(config-line)#password cisco 
+
+
+Set a telnet password. This command is also used to enable telnet access for up to 5 simultaneous 
+logins 
+
+Router(config)#line vty 0 4 
+Router(config-line)#login 
+Router(config-line)#password cisco 
+Stop console timing out in cases of inactivity Router(config)#line con 0 
+Router(config-line)#exec-timeout 0 0 
+Set the enable password to cisco Router(config)#enable password cisco 
+
+
+Set the enable secret password to peter. 
+
+This password overrides the enable password and is encypted within the config file 
+Router(config)#enable secret peter
+*********************
